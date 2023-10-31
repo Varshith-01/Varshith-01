@@ -1,0 +1,81 @@
+// Astronaut class
+class Astronaut {
+    constructor(massKg, name) {
+        this.massKg = massKg;
+        this.name = name;
+    }
+}
+// Cargo class
+class Cargo {
+    constructor(massKg, material) {
+        this.massKg = massKg;
+        this.material = material;
+    }
+}
+// Rocket class
+class Rocket {
+    constructor(name, totalCapacityKg) {
+        this.cargoItems = [];
+        this.astronauts = [];
+        this.name = name;
+        this.totalCapacityKg = totalCapacityKg;
+    }
+    sumMass(items) {
+        return items.reduce((total, item) => total + item.massKg, 0);
+    }
+    currentMassKg() {
+        return this.sumMass([...this.cargoItems, ...this.astronauts]);
+    }
+    canAdd(item) {
+        return this.currentMassKg() + item.massKg <= this.totalCapacityKg;
+    }
+    addCargo(cargo) {
+        if (this.canAdd(cargo)) {
+            this.cargoItems.push(cargo);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    addAstronaut(astronaut) {
+        if (this.canAdd(astronaut)) {
+            this.astronauts.push(astronaut);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+}
+// Create a rocket and run a simulation
+const rocket = new Rocket("Falcon 9", 20000);
+const astronaut1 = new Astronaut(75223, "Varshith");
+const astronaut2 = new Astronaut(6869, "Vijay");
+const cargo1 = new Cargo(5000, "Satellites");
+const cargo2 = new Cargo(10000, "Supplies");
+if (rocket.addAstronaut(astronaut1)) {
+    console.log(`True`);
+}
+else {
+    console.log(`False`);
+}
+if (rocket.addCargo(cargo1)) {
+    console.log(`True`);
+}
+else {
+    console.log(`False`);
+}
+if (rocket.addAstronaut(astronaut2)) {
+    console.log(`True`);
+}
+else {
+    console.log(`False`);
+}
+if (rocket.addCargo(cargo2)) {
+    console.log(`True`);
+}
+else {
+    console.log(`False`);
+}
+console.log(`Current total mass on ${rocket.name}: ${rocket.currentMassKg()} kg.`);
